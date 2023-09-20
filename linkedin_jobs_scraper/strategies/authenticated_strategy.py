@@ -279,7 +279,7 @@ class AuthenticatedStrategy(Strategy):
         :return: None
         """
 
-        tag = f'[{query.query}][{location}]'
+        tag = f'[{query.query}][{location}]' # Query.query is essentially QueryOptions + QueryFilters
 
         metrics = EventMetrics()
 

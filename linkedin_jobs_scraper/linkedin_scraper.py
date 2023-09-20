@@ -119,6 +119,10 @@ class LinkedinScraper:
                 filters = ','.join(e.value for e in query.options.filters.experience)
                 params['f_E'] = filters
                 debug(tag, 'Applied experience filters', query.options.filters.experience)
+            
+            if query.options.filters.under_10_applicants is not None:
+                params['f_EA'] = query.options.filters.under_10_applicants
+                debug(tag, 'Applied Under 10 Applicants filter', query.options.filters.under_10_applicants)
 
             # On site/remote filters supported only with authenticated session (for now)
             if query.options.filters.on_site_or_remote is not None and Config.LI_AT_COOKIE:
@@ -213,7 +217,7 @@ class LinkedinScraper:
         if not isinstance(queries, list):
             queries = [queries]
 
-        for query in queries:
+        for query in queries: # Validate whether user-chosen options are valid
             if not isinstance(query, Query):
                 raise ValueError(f'A query object must be an instance of class Query, found {type(query)}')
             query.validate()

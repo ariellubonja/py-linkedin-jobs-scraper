@@ -20,7 +20,8 @@ class QueryFilters(__Base):
                  time: TimeFilters = None,
                  type: Union[TypeFilters, List[TypeFilters]] = None,
                  experience: Union[ExperienceLevelFilters, List[ExperienceLevelFilters]] = None,
-                 on_site_or_remote: Union[OnSiteOrRemoteFilters, List[OnSiteOrRemoteFilters]] = None):
+                 on_site_or_remote: Union[OnSiteOrRemoteFilters, List[OnSiteOrRemoteFilters]] = None,
+                 under_10_applicants: bool = None):
 
         super().__init__()
 
@@ -48,6 +49,7 @@ class QueryFilters(__Base):
         self.type = type
         self.experience = experience
         self.on_site_or_remote = on_site_or_remote
+        self.under_10_applicants = under_10_applicants
 
     def validate(self):
         if self.company_jobs_url is not None:
@@ -67,6 +69,9 @@ class QueryFilters(__Base):
 
         if self.time is not None and not isinstance(self.time, TimeFilters):
             raise ValueError('Parameter time must be of type TimeFilters')
+        
+        if self.under_10_applicants is not None and not isinstance(self.under_10_applicants, bool):
+            raise ValueError('Parameter under_10_applicants must be of type bool')
 
         if any((not isinstance(e, TypeFilters) for e in self.type)):
             raise ValueError('Parameter type must be of type Union[TypeFilters, List[TypeFilters]]')
