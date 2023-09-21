@@ -125,11 +125,13 @@ class AuthenticatedStrategy(Strategy):
             driver.get(url)
 
             elapsed = 0
-            sleep_time = 0.05  # 50 ms
+            sleep_time = 0.5  # 500 ms
 
             info(tag, f'Waiting for new jobs to load')
             # Wait for new jobs to load
             while elapsed < timeout:
+                sleep(sleep_time)
+
                 loaded = driver.execute_script(
                     '''
                         return document.querySelectorAll(arguments[0]).length > 0;                
@@ -139,7 +141,6 @@ class AuthenticatedStrategy(Strategy):
                 if loaded:
                     return {'success': True}
 
-                sleep(sleep_time)
                 elapsed += sleep_time
         finally:
             pass
